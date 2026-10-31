@@ -3,6 +3,5 @@ numpy
 pandas
 matplotlib
 biopython
-jupyter
 ipykernel
 scipy
