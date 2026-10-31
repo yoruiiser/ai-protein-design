@@ -1,0 +1,26 @@
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Model checkpoints
+*.pt
+*.pth
+*.ckpt
+
+# Temporary files
+*.tmp
+*.log
+
+# Large generated structures
+data/raw/
+results/generated/
+
+# Environment files
+.env
+
