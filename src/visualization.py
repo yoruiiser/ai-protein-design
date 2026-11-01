@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-
+import numpy as np
 
 def plot_composition(composition, output_path):
 
@@ -20,9 +20,6 @@ def plot_composition(composition, output_path):
 
     plt.show()
 
-import matplotlib.pyplot as plt
-
-
 def plot_distance_matrix(distance_matrix, output_path):
 
     plt.figure(figsize=(8, 7))
@@ -41,5 +38,39 @@ def plot_distance_matrix(distance_matrix, output_path):
     plt.savefig(output_path, dpi=300)
 
     print("Distance matrix saved to:", output_path)
+
+    plt.show()
+
+
+
+def plot_ramachandran(results, output_path):
+
+    phi_values = [
+        item["phi"] for item in results
+        if item["phi"] is not None and item["psi"] is not None
+    ]
+
+    psi_values = [
+        item["psi"] for item in results
+        if item["phi"] is not None and item["psi"] is not None
+    ]
+
+    plt.figure(figsize=(8, 8))
+
+    plt.scatter(phi_values, psi_values, alpha=0.7)
+
+    plt.xlim(-180, 180)
+    plt.ylim(-180, 180)
+
+    plt.xlabel("Phi (degrees)")
+    plt.ylabel("Psi (degrees)")
+
+    plt.title("Ramachandran Plot")
+
+    plt.grid(alpha=0.2)
+
+    plt.tight_layout()
+
+    plt.savefig(output_path, dpi=300)
 
     plt.show()

@@ -12,6 +12,8 @@ from structure_analysis import (
     calculate_distance_matrix,
     calculate_contact_map
 )
+from backbone_analysis import extract_backbone_angles
+from visualization import plot_ramachandran
 
 
 def main():
@@ -66,8 +68,19 @@ def main():
 
         print("Distance between first two CA atoms:",
                 distance_matrix[0, 1])
-      
 
+    
+    angles = extract_backbone_angles("data/raw/1LYZ.pdb")
+    for item in angles[:10]:
+        print(
+            item["amino_acid"],
+            "Phi:", item["phi"],
+            "Psi:", item["psi"]
+        )
 
+    plot_ramachandran(
+        angles,
+        "results/figures/ramachandran.png"
+    )
 if __name__ == "__main__":
-    main()
+ main()
