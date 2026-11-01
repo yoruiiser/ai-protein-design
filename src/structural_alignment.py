@@ -1,3 +1,4 @@
+from Bio.PDB import PDBParser, is_aa
 import numpy as np
 
 
@@ -55,3 +56,67 @@ def kabsch_alignment(reference, mobile):
     rmsd = calculate_rmsd(reference, aligned_mobile)
 
     return aligned_mobile, rotation, rmsd
+
+
+
+def extract_ca_by_residue(file_path, chain_id="A"):
+
+    parser = PDBParser(QUIET=True)
+    structure = parser.get_structure("protein", file_path)
+
+    model = structure[0]
+    chain = model[chain_id]
+
+    residues = {}
+
+    for residue in chain:
+
+        if not is_aa(residue, standard=True):
+            continue
+
+        if not residue.has_id("CA"):
+            continue
+
+        residue_key = (
+            residue.id[1],
+            residue.id[2]
+        )
+
+        residues[residue_key] = {
+            "name": residue.resname,
+            "coordinate": residue["CA"].coord
+        }
+
+    return residues
+
+
+
+def match_residues(reference, mobile):
+
+    common_keys = sorted(
+        set(reference.keys()) & set(mobile.keys())
+    )
+
+    matched_reference = []
+    matched_mobile = []
+
+    for key in common_keys:
+
+        ref_residue = reference[key]
+        mob_residue = mobile[key]
+
+        if ref_residue["name"] != mob_residue["name"]:
+            continue
+
+        matched_reference.append(
+            ref_residue["coordinate"]
+        )
+
+        matched_mobile.append(
+            mob_residue["coordinate"]
+        )
+
+    return (
+        np.array(matched_reference),
+        np.array(matched_mobile)
+    )

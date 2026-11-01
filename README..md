@@ -22,11 +22,9 @@ generative AI for designing novel protein structures.
 - RFdiffusion
 - ProteinMPNN
 - AlphaFold
-- Google Colab
 
 ## Project Structure
 
-- `notebooks/`: Computational experiments
 - `src/`: Python source code
 - `data/`: Input biological data
 - `results/`: Experimental outputs
