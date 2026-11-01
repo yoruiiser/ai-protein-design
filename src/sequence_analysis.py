@@ -1,5 +1,6 @@
 from Bio.SeqUtils import seq1
 from Bio.PDB import is_aa
+from collections import Counter
 
 def extract_sequence(structure):
     sequences={}
@@ -13,7 +14,6 @@ def extract_sequence(structure):
         sequences[chain.id]=sequence
     return sequences
 
-from collections import Counter
 
 def calculate_composition(sequence):
     counts=Counter(sequence)

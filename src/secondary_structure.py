@@ -1,63 +1,37 @@
-from Bio.PDB import PDBParser
-from Bio.PDB.DSSP import DSSP
-from collections import Counter
-
-
-def assign_secondary_structure(file_path):
+from Bio.PDB import PDBParser, DSSP
+def assign_secondary_structure(pdb_file):
 
     parser = PDBParser(QUIET=True)
 
-    structure = parser.get_structure(
-        "protein",
-        file_path
-    )
+    structure = parser.get_structure("protein", pdb_file)
 
     model = structure[0]
 
     dssp = DSSP(
         model,
-        file_path,
+        pdb_file,
         dssp="mkdssp"
     )
 
-    assignments = {}
+    results = []
 
     for key in dssp.keys():
 
         residue_data = dssp[key]
 
+        chain_id = key[0]
+        residue_id = key[1][1]
+
         amino_acid = residue_data[1]
         secondary_structure = residue_data[2]
+        relative_accessibility = residue_data[3]
 
-        assignments[key] = {
+        results.append({
+            "chain": chain_id,
+            "residue_number": residue_id,
             "amino_acid": amino_acid,
-            "secondary_structure": secondary_structure
-        }
+            "secondary_structure": secondary_structure,
+            "relative_accessibility": relative_accessibility
+        })
 
-    return assignments
-
-def calculate_secondary_composition(assignments):
-
-    counts = Counter()
-
-    for residue in assignments.values():
-
-        code = residue["secondary_structure"]
-
-        if code in ["H", "G", "I"]:
-            counts["Helix"] += 1
-
-        elif code in ["E", "B"]:
-            counts["Sheet"] += 1
-
-        else:
-            counts["Other"] += 1
-
-    total = sum(counts.values())
-
-    percentages = {
-        category: (count / total) * 100
-        for category, count in counts.items()
-    }
-
-    return counts, percentages
+    return results

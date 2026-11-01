@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from pathlib import Path
 
 def plot_composition(composition, output_path):
 
@@ -95,3 +96,46 @@ def plot_secondary_structure(percentages, output_path):
     plt.savefig(output_path, dpi=300)
 
     plt.show()
+
+def plot_secondary_structure(composition, output_path):
+
+    categories = list(composition.keys())
+
+    percentages = [
+        composition[category]["percentage"]
+        for category in categories
+    ]
+
+    counts = [
+        composition[category]["count"]
+        for category in categories
+    ]
+
+    plt.figure(figsize=(8, 5))
+
+    bars = plt.bar(categories, percentages)
+
+    plt.xlabel("Secondary Structure")
+    plt.ylabel("Percentage of Residues")
+    plt.title("Secondary Structure Composition of Lysozyme (1LYZ)")
+
+    plt.ylim(0, 100)
+    
+    for bar, percentage, count in zip(bars, percentages, counts):
+
+        plt.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height() + 1,
+            f"{percentage:.1f}% ({count})",
+            ha="center"
+        )
+
+    plt.tight_layout()
+
+    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+
+    plt.savefig(output_path, dpi=300, bbox_inches="tight")
+
+    plt.show()
+
+    plt.close()

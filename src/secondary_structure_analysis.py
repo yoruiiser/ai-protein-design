@@ -1,36 +1,39 @@
-from secondary_structure import (
-    assign_secondary_structure,
-    calculate_secondary_composition
-)
-
-from visualization import plot_secondary_structure
+from collections import Counter
 
 
-def main():
+def calculate_secondary_structure_composition(results):
 
-    assignments = assign_secondary_structure(
-        "data/raw/1LYZ.pdb"
-    )
+    # Extract secondary structure codes
+    structures = [
+        residue["secondary_structure"]
+        for residue in results
+    ]
 
-    counts, percentages = calculate_secondary_composition(
-        assignments
-    )
+    counts = Counter(structures)
 
-    print("\nSECONDARY STRUCTURE COUNTS")
+    # Group DSSP assignments
+    helix = sum(counts[code] for code in "HGI")
+    sheet = sum(counts[code] for code in "EB")
+    coil = sum(counts[code] for code in "TS-")
 
-    for category, count in counts.items():
-        print(category, ":", count)
+    total = len(structures)
 
-    print("\nSECONDARY STRUCTURE PERCENTAGES")
+    if total == 0:
+        raise ValueError("No secondary structure assignments found.")
 
-    for category, percentage in percentages.items():
-        print(category, ":", round(percentage, 2), "%")
+    composition = {
+        "Helix": {
+            "count": helix,
+            "percentage": helix / total * 100
+        },
+        "Sheet": {
+            "count": sheet,
+            "percentage": sheet / total * 100
+        },
+        "Coil": {
+            "count": coil,
+            "percentage": coil / total * 100
+        }
+    }
 
-    plot_secondary_structure(
-        percentages,
-        "results/figures/secondary_structure.png"
-    )
-
-
-if __name__ == "__main__":
-    main()
+    return composition

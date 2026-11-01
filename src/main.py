@@ -7,6 +7,7 @@ from sequence_analysis import (
 )
 from visualization import plot_composition
 from visualization import plot_distance_matrix
+from visualization import plot_secondary_structure
 from structure_analysis import (
     extract_ca_coordinates,
     calculate_distance_matrix,
@@ -14,6 +15,8 @@ from structure_analysis import (
 )
 from backbone_analysis import extract_backbone_angles
 from visualization import plot_ramachandran
+from secondary_structure import assign_secondary_structure
+from secondary_structure_analysis import calculate_secondary_structure_composition
 
 
 def main():
@@ -82,5 +85,26 @@ def main():
         angles,
         "results/figures/ramachandran.png"
     )
+    results = assign_secondary_structure("data/raw/1LYZ.pdb")
+
+    print("\nSECONDARY STRUCTURE RESULTS")
+    composition = calculate_secondary_structure_composition(results)
+
+    print("\nSECONDARY STRUCTURE COMPOSITION")
+
+    for category, values in composition.items():
+        print(
+        f"{category}: {values['count']} residues "
+        f"({values['percentage']:.2f}%)"
+    )
+
+    for residue in results[:10]:
+        print(residue)
+    plot_secondary_structure(
+    composition,
+    "results/figures/secondary_structure.png"
+)
+
+
 if __name__ == "__main__":
  main()
