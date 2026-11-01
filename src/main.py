@@ -5,6 +5,7 @@ from sequence_analysis import (
     calculate_frequency,
     calculate_statistics
 )
+from visualization import plot_composition
 
 
 def main():
@@ -19,6 +20,7 @@ def main():
         print("SEQUENCE:", sequence)
 
         composition = calculate_composition(sequence)
+        plot_composition(composition,f"results/figures/chain_{chain_id}_composition.png")
         frequencies = calculate_frequency(sequence)
         statistics = calculate_statistics(sequence)
 
