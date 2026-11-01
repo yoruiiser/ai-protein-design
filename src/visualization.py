@@ -74,3 +74,24 @@ def plot_ramachandran(results, output_path):
     plt.savefig(output_path, dpi=300)
 
     plt.show()
+
+
+
+def plot_secondary_structure(percentages, output_path):
+    labels = list(percentages.keys())
+    values = list(percentages.values())
+
+    plt.figure(figsize=(7, 5))
+
+    plt.bar(labels, values)
+
+    plt.xlabel("Secondary Structure")
+    plt.ylabel("Percentage (%)")
+
+    plt.title("Protein Secondary Structure Composition")
+
+    plt.tight_layout()
+
+    plt.savefig(output_path, dpi=300)
+
+    plt.show()
