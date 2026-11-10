@@ -18,6 +18,8 @@ from visualization import plot_ramachandran
 from secondary_structure import assign_secondary_structure
 from secondary_structure_analysis import calculate_secondary_structure_composition
 
+from proteinmpnn_input import prepare_protein_structure
+
 
 def main():
 
@@ -95,16 +97,19 @@ def main():
     for category, values in composition.items():
         print(
         f"{category}: {values['count']} residues "
-        f"({values['percentage']:.2f}%)"
-    )
+        f"({values['percentage']:.2f}%)")
 
     for residue in results[:10]:
         print(residue)
     plot_secondary_structure(
     composition,
-    "results/figures/secondary_structure.png"
-)
+    "results/figures/secondary_structure.png")
 
+    prepare_protein_structure(
+    "data/raw/1LYZ.pdb",
+    "data/processed/clean_1LYZ.pdb",
+    chain_id="A")
+    
 
 if __name__ == "__main__":
  main()
