@@ -1,0 +1,3 @@
+[submodule "external/ProteinMPNN"]
+	path = external/ProteinMPNN
+	url = https://github.com/dauparas/ProteinMPNN.git
