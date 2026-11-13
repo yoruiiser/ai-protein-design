@@ -19,7 +19,9 @@ from secondary_structure import assign_secondary_structure
 from secondary_structure_analysis import calculate_secondary_structure_composition
 
 from proteinmpnn_input import prepare_protein_structure
-
+from design_analysis import analyze_generated_sequences
+from sequence_conservation import calculate_conservation
+from visualization import plot_sequence_conservation
 
 def main():
 
@@ -109,7 +111,25 @@ def main():
     "data/raw/1LYZ.pdb",
     "data/processed/clean_1LYZ.pdb",
     chain_id="A")
-    
+    analyze_generated_sequences(
+    "results/designs/seqs/clean_1LYZ.fa")
+
+    conservation = calculate_conservation(
+    "results/designs/seqs/clean_1LYZ.fa")
+    print("\nSEQUENCE CONSERVATION")
+
+    for item in conservation[:20]:
+
+        print(
+            f"Position {item['position']}: "
+            f"{item['most_common_aa']} "
+            f"({item['conservation'] * 100:.1f}%)")
+
+
+    plot_sequence_conservation(
+    conservation,
+    "results/figures/sequence_conservation.png"
+)
 
 if __name__ == "__main__":
  main()

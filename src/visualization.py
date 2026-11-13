@@ -139,3 +139,55 @@ def plot_secondary_structure(composition, output_path):
     plt.show()
 
     plt.close()
+
+
+def plot_sequence_conservation(conservation, output_path):
+
+    positions = [
+        item["position"] for item in conservation
+    ]
+
+    frequencies = [
+        item["conservation"] * 100
+        for item in conservation
+    ]
+
+    plt.figure(figsize=(14, 5))
+
+    plt.plot(
+        positions,
+        frequencies,
+        linewidth=1
+    )
+
+    plt.xlabel("Residue Position")
+    plt.ylabel("Conservation (%)")
+    plt.title("ProteinMPNN Sequence Conservation — Lysozyme")
+
+    plt.ylim(0, 105)
+
+    plt.axhline(
+        y=100,
+        linestyle="--",
+        alpha=0.5
+    )
+
+    plt.grid(alpha=0.2)
+
+    plt.tight_layout()
+
+    Path(output_path).parent.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    plt.savefig(
+        output_path,
+        dpi=300,
+        bbox_inches="tight"
+    )
+
+    plt.show()
+    plt.close()
+
+    
